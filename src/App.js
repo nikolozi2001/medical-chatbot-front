@@ -33,6 +33,9 @@ const App = () => {
         },
       };
       const response = await fetch("http://localhost:8000/chat", options);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await response.json();
 
       console.log(data);
@@ -45,12 +48,12 @@ const App = () => {
         },
         {
           role: "model",
-          parts: data,
+          parts: data.text,
         },
       ]);
       setValue("");
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching response:", error);
       setError("Something went wrong. Please try again later");
     }
   };
