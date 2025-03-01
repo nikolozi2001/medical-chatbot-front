@@ -4,28 +4,36 @@ const App = () => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const surpriseOptions = [
-    "Who is the best gastroenterologist in the world?",
-    "what is the best way to get rid of a headache?",
-    "Where is the best hospital in the world?",
+    "ვინ არის საუკეთესო გასტროენტეროლოგი?",
+    "რა გზას მივმართო თავის ტკივილის დროს?",
+    "რომელი კლინიკაა ყველაზე კარგი?",
+    "რა უნდა ვიცოდეთ გაღიზიანებული ნაწლავის სინდრომის დროს?",
   ];
 
   const surprise = () => {
     const randomValue = Math.floor(Math.random() * surpriseOptions.length);
-    setValue(randomValue);
+    setValue(surpriseOptions[randomValue]);
   };
 
   const getResponse = async () => {
     if (!value) {
-      setError("Please enter a question");
+      setError("გთხოვთ ჩაწეროთ შეკითხვა");
       return;
     }
+    setLoading(true);
     try {
+      const formattedHistory = chatHistory.map((item) => ({
+        role: item.role,
+        parts: [item.parts].flat(),
+      }));
+
       const options = {
         method: "POST",
         body: JSON.stringify({
-          history: chatHistory,
+          history: formattedHistory,
           message: value,
         }),
         headers: {
@@ -43,18 +51,20 @@ const App = () => {
       setChatHistory((oldChatHistory) => [
         ...oldChatHistory,
         {
-          role: "user",
-          parts: value,
+          role: "კითხვა",
+          parts: [value],
         },
         {
-          role: "model",
-          parts: data.text,
+          role: "პასუხი",
+          parts: [data.text],
         },
       ]);
       setValue("");
     } catch (error) {
       console.error("Error fetching response:", error);
-      setError("Something went wrong. Please try again later");
+      setError("შეცდომაა, გთხოვთ სცადოთ ხელახლა");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,19 +77,24 @@ const App = () => {
   return (
     <div className="app">
       <p>
-        what do you want to know?
-        <button className="surprise" onClick={surprise} disabled={chatHistory}>
-          Surprise me!
+        რისი ცოდნა გსურთ?
+        <button
+          className="surprise"
+          onClick={surprise}
+          disabled={chatHistory.length > 0}
+        >
+          კითხვის გენერირება!
         </button>
       </p>
       <div className="input-container">
         <input
           value={value}
-          placeholder="When is Christmas...?"
+          placeholder="ჩაწერეთ შეკითხვა..."
           onChange={(e) => setValue(e.target.value)}
         />
-        {!error && <button onClick={getResponse}>Ask me</button>}
-        {error && <button onClick={clear}>Clear</button>}
+        {!error && !loading && <button onClick={getResponse}>მკითხე</button>}
+        {error && <button onClick={clear}>გასუფთავება</button>}
+        {loading && <p>დაელოდეთ...</p>}
       </div>
       {error && <p className="error">{error}</p>}
 
@@ -87,7 +102,7 @@ const App = () => {
         {chatHistory.map((chatItem, _index) => (
           <div key={_index}>
             <p className="answer">
-              {chatItem.role} : {chatItem.parts}
+              {chatItem.role} : {chatItem.parts.join(" ")}
             </p>
           </div>
         ))}

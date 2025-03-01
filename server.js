@@ -17,7 +17,10 @@ app.post("/chat", async (req, res) => {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const chat = model.startChat({
-      history: req.body.history,
+      history: req.body.history.map(item => ({
+        role: item.role,
+        parts: item.parts.flat(),
+      })),
     });
 
     const msg = req.body.message;
@@ -39,7 +42,7 @@ app.post("/chat", async (req, res) => {
       console.error("Response status:", error.response.status);
       console.error("Response headers:", error.response.headers);
     }
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ error: "Internal Server Error", details: error.message });
   }
 });
 
