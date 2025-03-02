@@ -12,27 +12,22 @@ const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEN_AI_KEY);
 
 app.post("/chat", async (req, res) => {
   try {
-    console.log("Received /chat request with body:", req.body);
+    // console.log("Received /chat request with body:", req.body);
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    const chat = model.startChat({
-      history: req.body.history.map(item => ({
-        role: item.role,
-        parts: item.parts.flat(),
-      })),
-    });
+    const chat = model.startChat();
 
     const msg = req.body.message;
 
     const result = await chat.sendMessage(msg);
-    console.log("Result object:", result);
+    // console.log("Result object:", result);
 
     const response = await result.response;
-    console.log("Response object:", response);
+    // console.log("Response object:", response);
 
     const text = response.candidates[0].content.parts.map(part => part.text).join(" ");
-    console.log("Generated response text:", text);
+    // console.log("Generated response text:", text);
 
     res.json({ text });
   } catch (error) {

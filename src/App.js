@@ -3,7 +3,7 @@ import { useState } from "react";
 const App = () => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
-  const [chatHistory, setChatHistory] = useState([]);
+  const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
   const surpriseOptions = [
@@ -24,16 +24,11 @@ const App = () => {
       return;
     }
     setLoading(true);
+    setError("");
     try {
-      const formattedHistory = chatHistory.map((item) => ({
-        role: item.role,
-        parts: [item.parts].flat(),
-      }));
-
       const options = {
         method: "POST",
         body: JSON.stringify({
-          history: formattedHistory,
           message: value,
         }),
         headers: {
@@ -48,17 +43,7 @@ const App = () => {
 
       console.log(data);
 
-      setChatHistory((oldChatHistory) => [
-        ...oldChatHistory,
-        {
-          role: "კითხვა",
-          parts: [value],
-        },
-        {
-          role: "პასუხი",
-          parts: [data.text],
-        },
-      ]);
+      setResponse(data.text);
       setValue("");
     } catch (error) {
       console.error("Error fetching response:", error);
@@ -68,21 +53,11 @@ const App = () => {
     }
   };
 
-  const clear = () => {
-    setChatHistory([]);
-    setError("");
-    setValue("");
-  };
-
   return (
     <div className="app">
       <p>
         რისი ცოდნა გსურთ?
-        <button
-          className="surprise"
-          onClick={surprise}
-          disabled={chatHistory.length > 0}
-        >
+        <button className="surprise" onClick={surprise}>
           კითხვის გენერირება!
         </button>
       </p>
@@ -93,20 +68,15 @@ const App = () => {
           onChange={(e) => setValue(e.target.value)}
         />
         {!error && !loading && <button onClick={getResponse}>მკითხე</button>}
-        {error && <button onClick={clear}>გასუფთავება</button>}
         {loading && <p>დაელოდეთ...</p>}
       </div>
       {error && <p className="error">{error}</p>}
 
-      <div className="search-results">
-        {chatHistory.map((chatItem, _index) => (
-          <div key={_index}>
-            <p className="answer">
-              {chatItem.role} : {chatItem.parts.join(" ")}
-            </p>
-          </div>
-        ))}
-      </div>
+      {response && (
+        <div className="search-results">
+          <p className="answer">პასუხი: {response}</p>
+        </div>
+      )}
     </div>
   );
 };
