@@ -1,20 +1,29 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Card, TextField, Typography } from "@mui/material";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import SendIcon from "@mui/icons-material/Send";
 
 const LiveCallerWidget = () => {
   const [time, setTime] = useState("");
-  const [date, setDate] = useState("3 მარტი");
   const [phone, setPhone] = useState("");
+
+  const today = new Date();
+  const todayDate = today.toISOString().split("T")[0];
+  const [dateInputValue, setDateInputValue] = useState(todayDate);
+
+  const validateDateInput = (e) => {
+    const selectedDate = new Date(e.target.value);
+
+    if (selectedDate < today) {
+      toast.error("ძველი თარიღის არჩევა შეუძლებელია");
+      setDateInputValue(todayDate);
+      return;
+    }
+
+    setDateInputValue(e.target.value);
+  };
 
   return (
     <Box
@@ -65,21 +74,13 @@ const LiveCallerWidget = () => {
 
         {/* Date Selection */}
         <Typography sx={{ mt: 2 }}>თარიღი</Typography>
-        <Select
+        <TextField
           fullWidth
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          displayEmpty
+          type="date"
+          value={dateInputValue}
+          onChange={validateDateInput}
           sx={{ mt: 1 }}
-          IconComponent={ExpandMoreIcon}
-          onClick={(e) => e.stopPropagation()} // Stop propagation
-        >
-          <MenuItem value={"3 მარტი"}>3 მარტი</MenuItem>
-          <MenuItem value={"4 მარტი"}>4 მარტი</MenuItem>
-          <MenuItem value={"5 მარტი"}>5 მარტი</MenuItem>
-        </Select>
-
-        {/* Time Selection */}
+        />
         <Typography sx={{ mt: 2 }}>საათი</Typography>
         <TextField
           fullWidth
@@ -87,12 +88,12 @@ const LiveCallerWidget = () => {
           value={time}
           onChange={(e) => setTime(e.target.value)}
           sx={{ mt: 1 }}
+          min={todayDate}
         />
 
         {/* Phone Number */}
         <Typography sx={{ mt: 2 }}>თქვენი ნომერი</Typography>
         <Box display="flex" alignItems="center" mt={1}>
-          
           <TextField
             fullWidth
             type="tel"
@@ -101,6 +102,16 @@ const LiveCallerWidget = () => {
             placeholder="555 12 34 56"
           />
         </Box>
+
+        {/* Submit Button */}
+        <Button
+          variant="contained"
+          fullWidth
+          sx={{ mt: 2, borderRadius: "20px" }}
+          startIcon={<SendIcon />}
+        >
+          გადმორეკვა
+        </Button>
       </Card>
     </Box>
   );
