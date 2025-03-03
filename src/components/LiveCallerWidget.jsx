@@ -94,7 +94,7 @@ const LiveCallerWidget = () => {
             სამუშაო საათები
           </Typography>
           <Typography variant="body2">ორშ - პარ:</Typography>
-          <Typography variant="body2">09:00 - 17:00</Typography>
+          <Typography variant="body2">09⁰⁰ - 17⁰⁰</Typography>
         </Card>
       )}
 

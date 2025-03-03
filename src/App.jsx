@@ -3,7 +3,8 @@ import InputForm from "./components/InputForm";
 import ResponseDisplay from "./components/ResponseDisplay";
 import Modal from "./components/Modal";
 import SmsSvg from "./assets/icons/sms.svg";
-import LiveCallerWidget from "./components/LiveCallerWidget"; // Import the new component
+import LiveCallerWidget from "./components/LiveCallerWidget";
+import { Typography } from "@mui/material";
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -60,7 +61,9 @@ const App = () => {
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
           {showLiveCaller && <LiveCallerWidget />}
-          <p>რისი ცოდნა გსურთ?</p>
+          <Typography variant="h6" fontWeight="bold" pt={2} pl={8}>
+            რისი ცოდნა გსურთ?
+          </Typography>
           <InputForm
             value={value}
             setValue={setValue}
