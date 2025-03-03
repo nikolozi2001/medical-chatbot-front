@@ -11,6 +11,7 @@ const App = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLiveCaller, setShowLiveCaller] = useState(true);
 
   const getResponse = async () => {
     if (!value) {
@@ -19,6 +20,7 @@ const App = () => {
     }
     setLoading(true);
     setError("");
+    setShowLiveCaller(false);
     try {
       const options = {
         method: "POST",
@@ -57,7 +59,7 @@ const App = () => {
       />
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          <LiveCallerWidget /> {/* Use the new component */}
+          {showLiveCaller && <LiveCallerWidget />}
           <p>რისი ცოდნა გსურთ?</p>
           <InputForm
             value={value}

@@ -24,9 +24,15 @@ const Modal = ({ children, onClose }) => {
     };
   }, [onClose]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      modalRef.current.classList.add("show");
+    }, 10);
+  }, []);
+
   return (
-    <div className="modal-overlay">
-      <div className="modal-content" ref={modalRef}>
+    <div className="modal-overlay show">
+      <div className="modal-content show" ref={modalRef}>
         <button className="close-button" onClick={onClose}>
           <RemoveIcon />
         </button>
