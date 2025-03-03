@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import RemoveIcon from '@mui/icons-material/Remove';
 import "./Modal.scss";
 
 const Modal = ({ children, onClose }) => {
@@ -27,7 +28,7 @@ const Modal = ({ children, onClose }) => {
     <div className="modal-overlay">
       <div className="modal-content" ref={modalRef}>
         <button className="close-button" onClick={onClose}>
-          &times;
+          <RemoveIcon />
         </button>
         {children}
       </div>
