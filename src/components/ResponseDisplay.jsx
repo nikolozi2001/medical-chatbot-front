@@ -2,7 +2,7 @@ const ResponseDisplay = ({ response }) => {
   return (
     response && (
       <div className="search-results">
-        <p className="answer">პასუხი: {response}</p>
+        <p className="answer response-paragraph">პასუხი: {response}</p>
       </div>
     )
   );

@@ -5,8 +5,13 @@ const InputForm = ({ value, setValue, getResponse, error, loading }) => {
         value={value}
         placeholder="ჩაწერეთ შეკითხვა..."
         onChange={(e) => setValue(e.target.value)}
+        className="input-field"
       />
-      {!error && !loading && <button onClick={getResponse}>მკითხე</button>}
+      {!error && !loading && (
+        <button onClick={getResponse} className="submit-button">
+          მკითხე
+        </button>
+      )}
       {loading && <p>დაელოდეთ...</p>}
     </div>
   );

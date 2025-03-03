@@ -3,6 +3,7 @@ import InputForm from "./components/InputForm";
 import ResponseDisplay from "./components/ResponseDisplay";
 import Modal from "./components/Modal";
 import SmsSvg from "./assets/icons/sms.svg";
+import LiveCallerWidget from "./components/LiveCallerWidget"; // Import the new component
 
 const App = () => {
   const [value, setValue] = useState("");
@@ -56,6 +57,7 @@ const App = () => {
       />
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
+          <LiveCallerWidget /> {/* Use the new component */}
           <p>რისი ცოდნა გსურთ?</p>
           <InputForm
             value={value}
