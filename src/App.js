@@ -6,18 +6,6 @@ const App = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const surpriseOptions = [
-    "ვინ არის საუკეთესო გასტროენტეროლოგი?",
-    "რა გზას მივმართო თავის ტკივილის დროს?",
-    "რომელი კლინიკაა ყველაზე კარგი?",
-    "რა უნდა ვიცოდეთ გაღიზიანებული ნაწლავის სინდრომის დროს?",
-  ];
-
-  const surprise = () => {
-    const randomValue = Math.floor(Math.random() * surpriseOptions.length);
-    setValue(surpriseOptions[randomValue]);
-  };
-
   const getResponse = async () => {
     if (!value) {
       setError("გთხოვთ ჩაწეროთ შეკითხვა");
@@ -55,12 +43,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <p>
-        რისი ცოდნა გსურთ?
-        <button className="surprise" onClick={surprise}>
-          კითხვის გენერირება!
-        </button>
-      </p>
+      <p>რისი ცოდნა გსურთ?</p>
       <div className="input-container">
         <input
           value={value}
