@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import SendIcon from "@mui/icons-material/Send";
 const LiveCallerWidget = () => {
   const [time, setTime] = useState("");
   const [phone, setPhone] = useState("");
+  const [isChatActive, setIsChatActive] = useState(false);
 
   const today = new Date();
   const todayDate = today.toISOString().split("T")[0];
@@ -25,41 +26,77 @@ const LiveCallerWidget = () => {
     setDateInputValue(e.target.value);
   };
 
+  useEffect(() => {
+    const checkTime = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      setIsChatActive(currentHour >= 9 && currentHour < 17);
+    };
+    checkTime();
+    const interval = setInterval(checkTime, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      {/* Top Banner */}
-      <Card
-        sx={{
-          backgroundColor: "#1E2A4A",
-          color: "white",
-          padding: 3,
-          borderRadius: "12px",
-          textAlign: "center",
-          width: "90%",
-          maxWidth: 400,
-          mb: 2,
-        }}
-      >
-        <Typography variant="h6" fontWeight="bold">
-          გამარჯობა,
-        </Typography>
-        <Typography variant="body2">გჭირდებათ დახმარება? მოგვწერეთ!</Typography>
-        <Button
-          variant="contained"
+      {isChatActive ? (
+        <Card
           sx={{
-            backgroundColor: "#FFC107",
-            color: "black",
-            mt: 2,
-            borderRadius: "20px",
-            textTransform: "none",
+            backgroundColor: "#1E2A4A",
+            color: "white",
+            padding: 3,
+            borderRadius: "12px",
+            textAlign: "center",
+            width: "90%",
+            maxWidth: 400,
+            mb: 2,
           }}
-          startIcon={<ChatBubbleOutlineIcon />}
         >
-          ონლაინ ჩატი
-        </Button>
-      </Card>
+          <Typography variant="h6" fontWeight="bold">
+            გამარჯობა,
+          </Typography>
+          <Typography variant="body2">
+            გჭირდებათ დახმარება? მოგვწერეთ!
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#FFC107",
+              color: "black",
+              mt: 2,
+              borderRadius: "20px",
+              textTransform: "none",
+            }}
+            startIcon={<ChatBubbleOutlineIcon />}
+          >
+            ონლაინ ჩატი
+          </Button>
+        </Card>
+      ) : (
+        <Card
+          sx={{
+            backgroundColor: "#1E2A4A",
+            color: "white",
+            padding: 3,
+            borderRadius: "12px",
+            textAlign: "center",
+            width: "90%",
+            maxWidth: 400,
+            mb: 2,
+          }}
+        >
+          <Typography variant="body2" fontWeight="bold">
+            ონლაინ ჩატი არ არის ხელმისაწვდომი
+          </Typography>
+          <Typography variant="h6" fontWeight="bold">
+            სამუშაო საათები
+          </Typography>
+          <Typography variant="body2">ორშ - პარ:</Typography>
+          <Typography variant="body2">09:00 - 17:00</Typography>
+        </Card>
+      )}
 
       {/* Call Request Form */}
       <Card
