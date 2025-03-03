@@ -1,6 +1,13 @@
 # Medical Chatbot Frontend
 
-This is the frontend for the medical chatbot application. It allows users to ask medical-related questions and receive responses from a backend server powered by Google Generative AI.
+This project is the frontend for a medical chatbot application. It allows users to ask medical-related questions and receive responses from the chatbot.
+
+## Features
+
+- Ask medical-related questions
+- Receive responses from the chatbot
+- Responsive modal for input and responses
+- Live caller widget integration
 
 ## Prerequisites
 
@@ -10,15 +17,15 @@ This is the frontend for the medical chatbot application. It allows users to ask
 ## Installation
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-username/medical-chatbot-front.git
+   ```sh
+   git clone https://github.com/yourusername/medical-chatbot-front.git
+   ```
+2. Navigate to the project directory:
+   ```sh
    cd medical-chatbot-front
    ```
-
-2. Install the dependencies:
-
-   ```bash
+3. Install dependencies:
+   ```sh
    npm install
    ```
 
@@ -52,10 +59,27 @@ GOOGLE_GEN_AI_KEY=your-google-generative-ai-key
 - Click "გასუფთავება" to clear the chat history.
 - Click "კითხვის გენერირება!" to generate a random question.
 
-## Project Structure
+## Components
 
-- `src/App.js`: Main React component for the frontend application.
-- `server.js`: Backend server code to handle chat requests.
+### `InputForm`
+
+The `InputForm` component allows users to input their questions and submit them to the chatbot.
+
+### `ResponseDisplay`
+
+The `ResponseDisplay` component displays the chatbot's responses.
+
+### `Modal`
+
+The `Modal` component displays a modal overlay with a transition effect from bottom to top. It is responsive and adjusts its layout based on the screen size.
+
+### `LiveCallerWidget`
+
+The `LiveCallerWidget` component provides live caller functionality within the modal.
+
+## Styles
+
+The styles for the modal are defined in `Modal.scss`. The modal is responsive and adjusts its layout based on the screen size.
 
 ## License
 
