@@ -1,10 +1,15 @@
 import { useState } from "react";
+import InputForm from "./components/InputForm";
+import ResponseDisplay from "./components/ResponseDisplay";
+import Modal from "./components/Modal";
+import SmsSvg from "./assets/icons/sms.svg";
 
 const App = () => {
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getResponse = async () => {
     if (!value) {
@@ -43,22 +48,25 @@ const App = () => {
 
   return (
     <div className="app">
-      <p>რისი ცოდნა გსურთ?</p>
-      <div className="input-container">
-        <input
-          value={value}
-          placeholder="ჩაწერეთ შეკითხვა..."
-          onChange={(e) => setValue(e.target.value)}
-        />
-        {!error && !loading && <button onClick={getResponse}>მკითხე</button>}
-        {loading && <p>დაელოდეთ...</p>}
-      </div>
-      {error && <p className="error">{error}</p>}
-
-      {response && (
-        <div className="search-results">
-          <p className="answer">პასუხი: {response}</p>
-        </div>
+      <img
+        onClick={() => setIsModalOpen(true)}
+        src={SmsSvg}
+        alt="SMS Icon"
+        className="sms_svg"
+      />
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <p>რისი ცოდნა გსურთ?</p>
+          <InputForm
+            value={value}
+            setValue={setValue}
+            getResponse={getResponse}
+            error={error}
+            loading={loading}
+          />
+          {error && <p className="error">{error}</p>}
+          <ResponseDisplay response={response} />
+        </Modal>
       )}
     </div>
   );
