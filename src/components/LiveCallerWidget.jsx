@@ -68,6 +68,10 @@ const LiveCallerWidget = () => {
               mt: 2,
               borderRadius: "20px",
               textTransform: "none",
+              transition: "transform 0.2s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+              },
             }}
             startIcon={<ChatBubbleOutlineIcon />}
           >
