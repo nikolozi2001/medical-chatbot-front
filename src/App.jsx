@@ -13,6 +13,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showLiveCaller, setShowLiveCaller] = useState(true);
+  const [showChatForm, setShowChatForm] = useState(false);
 
   const getResponse = async () => {
     if (!value) {
@@ -60,17 +61,23 @@ const App = () => {
       />
       {isModalOpen && (
         <Modal onClose={() => setIsModalOpen(false)}>
-          {showLiveCaller && <LiveCallerWidget />}
-          <Typography variant="h6" fontWeight="bold" pt={2} pl={8}>
-            რისი ცოდნა გსურთ?
-          </Typography>
-          <InputForm
-            value={value}
-            setValue={setValue}
-            getResponse={getResponse}
-            error={error}
-            loading={loading}
-          />
+          {!showChatForm && (
+            <LiveCallerWidget onChatButtonClick={() => setShowChatForm(true)} />
+          )}
+          {showChatForm && (
+            <>
+              <Typography variant="h6" fontWeight="bold" pt={2} pl={8}>
+                რისი ცოდნა გსურთ?
+              </Typography>
+              <InputForm
+                value={value}
+                setValue={setValue}
+                getResponse={getResponse}
+                error={error}
+                loading={loading}
+              />
+            </>
+          )}
           {error && <p className="error">{error}</p>}
           <ResponseDisplay response={response} />
         </Modal>

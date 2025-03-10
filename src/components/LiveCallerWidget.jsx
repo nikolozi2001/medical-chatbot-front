@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import SendIcon from "@mui/icons-material/Send";
 
-const LiveCallerWidget = () => {
+const LiveCallerWidget = ({ onChatButtonClick }) => {
   const [time, setTime] = useState("");
   const [phone, setPhone] = useState("");
   const [isChatActive, setIsChatActive] = useState(false);
@@ -74,6 +74,7 @@ const LiveCallerWidget = () => {
               },
             }}
             startIcon={<ChatBubbleOutlineIcon />}
+            onClick={onChatButtonClick}
           >
             ონლაინ ჩატი
           </Button>
